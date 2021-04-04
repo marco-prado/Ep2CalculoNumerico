@@ -98,6 +98,6 @@ for k in range(n + 1):
     t.append(intervalo[0] + h * k)
 erro = errork4(xrk4, xexplicito)
 plt.plot(erro)
-plt.title("Gráfico dos Erros para n = " + str(n))
+plt.title("Gráfico de erros para n = " + str(n))
 plt.show()
 
