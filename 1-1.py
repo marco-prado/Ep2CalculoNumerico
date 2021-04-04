@@ -18,7 +18,7 @@ def rk4(x0, n, I, f):
         x.append(x[k - 1] + (K1 + 2 * K2 + 2 * K3 + K4) * h / 6)
     return x
 
-def solExplicita(I):
+def solExplicita(I, n):
     xexplicito = []
     t = 0
     h = (I[1] - I[0]) / n
@@ -47,7 +47,7 @@ def errork4(xrk4, xexplicito):
 #calculo rk4
 x0 = [1,1,1,-1]
 I = [0, 2]
-n = 640
+n = int(input('Insira o valor de n: '))
 matA = [[-2,-1,-1,-2],[1,-2,2,-1],[-1,-2,-2,-1],[2,-1,1,-2]]
 f = lambda t, x: np.dot(matA,x)
 
@@ -58,10 +58,28 @@ print('----------------------------------------------------------')
 
 
 #calculo solucao explicita
-xexplicito = solExplicita(I)
+xexplicito = solExplicita(I, n)
 print('Solução explícita:')
 print(xexplicito[len(xexplicito)-1])
+print('----------------------------------------------------------')
 
+#calculo Rs
+erros = []
+erros.append(max(errork4(rk4(x0, 20, I, f), solExplicita(I,20))))
+erros.append(max(errork4(rk4(x0, 40, I, f), solExplicita(I,40))))
+erros.append(max(errork4(rk4(x0, 80, I, f), solExplicita(I,80))))
+erros.append(max(errork4(rk4(x0, 160, I, f), solExplicita(I,160))))
+erros.append(max(errork4(rk4(x0, 320, I, f), solExplicita(I,320))))
+erros.append(max(errork4(rk4(x0, 640, I, f), solExplicita(I,640))))
+
+Rs = []
+i = 0
+while(i<5):
+    Rs.append(erros[i]/erros[i+1])
+    i += 1
+
+print('Rs calculados:')
+print(Rs)
 
 #calculo do erro
 t = []
@@ -71,4 +89,6 @@ for k in range(n + 1):
 
 erro = errork4(xrk4, xexplicito)
 plt.plot(erro)
+plt.title("Gráfico dos Erros para n = " + str(n))
 plt.show()
+
