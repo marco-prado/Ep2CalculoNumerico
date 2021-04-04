@@ -9,8 +9,8 @@ import matplotlib.pyplot as plt
 
 #funcao que calcula a solucao de uma EDO utilizando o metodo de Runge-Kutta de ordem 4
 def rk4(x0, n, intervalo, f):
+    x = [x0]  # array para os valores de x
     t = [] #array para os valores de t
-    x = [x0] #array para os valores de x
     h = (intervalo[1] - intervalo[0]) / n #passo calculado atraves do intervalo dado e de n
     for k in range(n + 1):
         t.append(intervalo[0] + h * k) #preenchimento dos valores de t
