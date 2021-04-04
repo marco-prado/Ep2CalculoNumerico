@@ -10,15 +10,12 @@ import matplotlib.pyplot as plt
 #funcao que calcula a solucao de uma EDO utilizando o metodo de Runge-Kutta de ordem 4
 def rk4(x0, n, intervalo, f):
     x = [x0]  # array para os valores de x
-    t = [] #array para os valores de t
     h = (intervalo[1] - intervalo[0]) / n #passo calculado atraves do intervalo dado e de n
-    for k in range(n + 1):
-        t.append(intervalo[0] + h * k) #preenchimento dos valores de t
     for k in range(1, n+1): #calculo das solucoes
-        K1 = f(t[k - 1], x[k - 1]) #calcula K1
-        K2 = f(t[k - 1] + h / 2, x[k - 1] + K1 * h / 2) #calcula K2
-        K3 = f(t[k - 1] + h / 2, x[k - 1] + K2 * h / 2) #calcula K3
-        K4 = f(t[k - 1] + h, x[k - 1] + K3 * h) #calcula K4
+        K1 = f(x[k - 1]) #calcula K1
+        K2 = f(x[k - 1] + K1 * h / 2) #calcula K2
+        K3 = f(x[k - 1] + K2 * h / 2) #calcula K3
+        K4 = f(x[k - 1] + K3 * h) #calcula K4
         x.append(x[k - 1] + (K1 + 2 * K2 + 2 * K3 + K4) * h / 6) #calcula x e o adiciona ao array
     return x #retorna array calculado
 
@@ -59,7 +56,7 @@ x0 = [1,1,1,-1]
 intervalo = [0, 2]
 n = int(input('Insira o valor de n: '))
 matA = [[-2,-1,-1,-2],[1,-2,2,-1],[-1,-2,-2,-1],[2,-1,1,-2]]
-f = lambda t, x: np.dot(matA,x) #f(t, x(t))
+f = lambda x: np.dot(matA,x) #f(t, x(t))
 xrk4 = rk4(x0, n, intervalo, f)
 print('Solução Calculada:')
 print(xrk4[len(xrk4) - 1])
