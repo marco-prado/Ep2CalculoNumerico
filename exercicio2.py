@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-def eulerExplicito(x0, y0, h, f, g):
+def eulerExplicito(x0, y0, n, h, f, g):
     # x0 e y0: valores iniciais
     # h: tamanho do "passo" de cada iteracao
     # f e g = Funções do Sistema EDO
@@ -21,7 +21,7 @@ def eulerExplicito(x0, y0, h, f, g):
     return x, y
 
 
-def rk4(x0, y0, h, f, g):
+def rk4(x0, y0, n, h, f, g):
     x = [x0]  # array para os valores de x
     y = [y0]  # array para os valores de y
     for k in range(1, n + 1):  # calculo das solucoes
@@ -49,9 +49,9 @@ y0 = 1.5
 metodo = int(input("Selecione o método a ser utilizado: \n 1: Método de Euler \n 2: Método de Runge-Kutta de 4a Ordem\n"))
 
 if(metodo == 1):
-    x, y = eulerExplicito(x0, y0, h, f, g)
+    x, y = eulerExplicito(x0, y0, n, h, f, g)
 elif(metodo == 2):
-    x, y = rk4(x0, y0, h, f, g)
+    x, y = rk4(x0, y0, n, h, f, g)
 
 t_eixo = []
 for i in range(0, n + 1):

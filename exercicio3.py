@@ -5,7 +5,7 @@
 import matplotlib.pyplot as plt
 
 
-def eulerExplicito(x0, y0, z0, h, f, g, u):
+def eulerExplicito(x0, y0, z0, n, h, f, g, u):
     # x0, y0 e z0: valores iniciais
     # h: tamanho do "passo" de cada iteracao
     # f, g e u = Funções do Sistema EDO
@@ -21,7 +21,7 @@ def eulerExplicito(x0, y0, z0, h, f, g, u):
 
     return [x, y, z]
 
-def rk4(x0, y0, z0, h, f, g, u):
+def rk4(x0, y0, z0, n, h, f, g, u):
     x = [x0]  # array para os valores de x
     y = [y0]  # array para os valores de y
     z = [z0]  # array para os valores de z
@@ -52,7 +52,7 @@ x0 = 500  # Coelhos
 y0 = 500  # Lebres
 z0 = 10   # Raposas
 
-n = 5000
+n = 8000
 T = [0, 100]
 alfas = [0.001, 0.002, 0.0033, 0.0036, 0.005, 0.0055]
 Tfs = [100, 100, 500, 500, 2000, 2000]
@@ -72,9 +72,9 @@ for i in range(0, len(alfas)):
     u = lambda x, y, z: z*(-1+alfa*x+0.0005*y)
 
     if metodo == 1:
-        retratos_fase.append(eulerExplicito(x0, y0, z0, h, f, g, u))
+        retratos_fase.append(eulerExplicito(x0, y0, z0, n, h, f, g, u))
     elif metodo == 2:
-        retratos_fase.append(rk4(x0, y0, z0, h, f, g, u))
+        retratos_fase.append(rk4(x0, y0, z0, n, h, f, g, u))
 
 
 fig = plt.figure()
