@@ -61,6 +61,14 @@ retratos_fase = []
 metodo = int(input("Selecione o método a ser utilizado: \n 1: Método de Euler \n 2: Método de Runge-Kutta de 4a Ordem\n"))
 alfa_selecionado = int(input("Selecione o alfa a ser utilizado:\n 1: 0.001\n 2: 0.002\n 3: 0.0033\n 4: 0.0036\n 5: 0.005\n 6: 0.0055\n")) - 1
 
+if(input("Você deseja alterar o valor inicial padrão de coelhos (500), lebres (500) e raposas (10)?(s/n) ") == 's'):
+    x0 = int(input("Insira o novo valor de coelhos: "))
+    y0 = int(input("Insira o novo valor de lebres: "))
+    z0 = int(input("Insira o novo valor de raposas: "))
+
+if(input("Você deseja alterar o valor padrão de Tf?(s/n) ") == 's'):
+    Tfs[alfa_selecionado] = int(input("Insira o novo valor de Tf: "))
+
 for i in range(0, len(alfas)):
     T[1] = Tfs[i]
     alfa = alfas[i]
