@@ -38,7 +38,6 @@ def solExplicita(intervalo, n):
         t += h
     return xexplicito #retorna array calculado
 
-
 #funcao que calcula o erro entre a solucao calculada atraves do RK4 e a explicita
 def errork4(xrk4, xexplicito):
     erro = []

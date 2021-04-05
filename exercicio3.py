@@ -3,7 +3,7 @@
 # Silas Lima e Silva        - NUSP 11262233
 
 import matplotlib.pyplot as plt
-
+import numpy as np
 
 def eulerExplicito(x0, y0, z0, n, h, f, g, u):
     # x0, y0 e z0: valores iniciais
@@ -84,11 +84,16 @@ for i in range(0, len(alfas)):
     elif metodo == 2:
         retratos_fase.append(rk4(x0, y0, z0, n, h, f, g, u))
 
+print("Numero de coelhos: " + str(np.floor(retratos_fase[alfa_selecionado][0][-1])))
+print("Numero de lebres: " + str(np.floor(retratos_fase[alfa_selecionado][1][-1])))
+print("Numero de raposas: " + str(np.floor(retratos_fase[alfa_selecionado][2][-1])))
 
 fig = plt.figure()
 ax = plt.axes(projection="3d")
 
 ax.plot3D(retratos_fase[alfa_selecionado][0], retratos_fase[alfa_selecionado][1], retratos_fase[alfa_selecionado][2], 'gray')
 plt.title("Retrato com Alfa = " + str(alfas[alfa_selecionado]))
+
+
 
 plt.show()
