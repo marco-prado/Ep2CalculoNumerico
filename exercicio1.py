@@ -5,6 +5,7 @@
 #imports das bibliotecas utilizadas
 import numpy as np
 import matplotlib.pyplot as plt
+from math import fabs
 
 
 #funcao que calcula a solucao de uma EDO utilizando o metodo de Runge-Kutta de ordem 4
@@ -49,51 +50,106 @@ def errork4(xrk4, xexplicito):
         erro.append(errotemp) #insere o maior erro no array de erros
     return erro #retorna array calculado
 
+def eulerImplicito(x0, f, n, T):
+    # x0: valor inicial de x
+    # f: Funcao da EDO
+    # n : numero de passos
+    # T = [T0,Tf]: Instantes inicial e final
 
-#calculo rk4
-x0 = [1,1,1,-1]
-intervalo = [0, 2]
-n = int(input('Insira o valor de n: '))
-matA = [[-2,-1,-1,-2],[1,-2,2,-1],[-1,-2,-2,-1],[2,-1,1,-2]]
-f = lambda x: np.dot(matA,x) #f(t, x(t))
-xrk4 = rk4(x0, n, intervalo, f)
-print('Solução Calculada:')
-print(xrk4[len(xrk4) - 1])
-print('----------------------------------------------------------')
-
-
-#calculo solucao explicita
-xexplicito = solExplicita(intervalo, n)
-print('Solução Explícita:')
-print(xexplicito[len(xexplicito)-1])
-print('----------------------------------------------------------')
-
-
-#calculo Rs
-erros = []
-#calculo do maior erro para cada valor de n
-erros.append(max(errork4(rk4(x0, 20, intervalo, f), solExplicita(intervalo,20))))
-erros.append(max(errork4(rk4(x0, 40, intervalo, f), solExplicita(intervalo,40))))
-erros.append(max(errork4(rk4(x0, 80, intervalo, f), solExplicita(intervalo,80))))
-erros.append(max(errork4(rk4(x0, 160, intervalo, f), solExplicita(intervalo,160))))
-erros.append(max(errork4(rk4(x0, 320, intervalo, f), solExplicita(intervalo,320))))
-erros.append(max(errork4(rk4(x0, 640, intervalo, f), solExplicita(intervalo,640))))
-Rs = []
-i = 0
-while(i<5): #preenchimento do array de Rs
-    Rs.append(erros[i]/erros[i+1])
-    i += 1
-print('Rs Calculados:')
-print(Rs)
+    x = [x0]
+    h = (T[1]-T[0])/n
+    l = 0
+    t = T[0]
+    while t < (T[1]-h):
+        xl1_aprox = x[l] + f(t, x[l])*h  # Calcula a aproximacao inicial para X_l+1
+        for i in range(0, 7):  # 7 passos do metodo de newton
+            xl1_aprox = xl1_aprox - ((x[l]-xl1_aprox + f(t+h, xl1_aprox)*h) / (2*h*(xl1_aprox - t**2)-1))
+        x.append(x[l] + f(t+h, xl1_aprox)*h)  # Implementa o metodo de Euler implicito: X_l+1 = X_l + f(t_l+1, x_l+1)*h
+        l += 1
+        t += h
+    return x
 
 
-#calculo e plot do erro
-t = []
-h = (intervalo[1] - intervalo[0]) / n
-for k in range(n + 1):
-    t.append(intervalo[0] + h * k)
-erro = errork4(xrk4, xexplicito)
-plt.plot(erro)
-plt.title("Gráfico de erros para n = " + str(n))
-plt.show()
+exercicio = int(input("Selecione o exercício: \n1: Teste Runge-Kutta 4 \n2: Teste Euler Implícito\n"))
 
+if exercicio == 1:
+    #calculo rk4
+    x0 = [1,1,1,-1]
+    intervalo = [0, 2]
+    n = int(input('Insira o valor de n: '))
+    matA = [[-2,-1,-1,-2],[1,-2,2,-1],[-1,-2,-2,-1],[2,-1,1,-2]]
+    f = lambda x: np.dot(matA,x) #f(t, x(t))
+    xrk4 = rk4(x0, n, intervalo, f)
+    print('Solução Calculada:')
+    print(xrk4[len(xrk4) - 1])
+    print('----------------------------------------------------------')
+
+
+    #calculo solucao explicita
+    xexplicito = solExplicita(intervalo, n)
+    print('Solução Explícita:')
+    print(xexplicito[len(xexplicito)-1])
+    print('----------------------------------------------------------')
+
+
+    #calculo Rs
+    erros = []
+    #calculo do maior erro para cada valor de n
+    erros.append(max(errork4(rk4(x0, 20, intervalo, f), solExplicita(intervalo,20))))
+    erros.append(max(errork4(rk4(x0, 40, intervalo, f), solExplicita(intervalo,40))))
+    erros.append(max(errork4(rk4(x0, 80, intervalo, f), solExplicita(intervalo,80))))
+    erros.append(max(errork4(rk4(x0, 160, intervalo, f), solExplicita(intervalo,160))))
+    erros.append(max(errork4(rk4(x0, 320, intervalo, f), solExplicita(intervalo,320))))
+    erros.append(max(errork4(rk4(x0, 640, intervalo, f), solExplicita(intervalo,640))))
+    Rs = []
+    i = 0
+    while(i<5): #preenchimento do array de Rs
+        Rs.append(erros[i]/erros[i+1])
+        i += 1
+    print('Rs Calculados:')
+    print(Rs)
+
+
+    #calculo e plot do erro
+    t = []
+    h = (intervalo[1] - intervalo[0]) / n
+    for k in range(n + 1):
+        t.append(intervalo[0] + h * k)
+    erro = errork4(xrk4, xexplicito)
+    plt.plot(erro)
+    plt.title("Gráfico de erros para n = " + str(n))
+    plt.show()
+
+elif exercicio == 2:
+    # Condicoes do Enunciado
+    x0 = -8.79
+    T = [1.1, 3.0]
+    N = 5000
+    f = lambda t, x: 2 * t + (x - t ** 2) ** 2
+
+    x_num = eulerImplicito(x0, f, N, T)
+    x_expl = []
+    E2 = []
+
+    tempos = []
+    h = (T[1] - T[0]) / N
+    for i in range(0, N + 1):
+        tempos.append(T[0] + h * i)
+
+    for i in range(0, N + 1):
+        x_expl.append(tempos[i] ** 2 + (1 / (1 - tempos[i])))  # Calculo da solucao explicita
+        E2.append(fabs(x_expl[i] - x_num[i]))  # Calculo do Erro na posicao i
+
+    plt.subplot(1, 3, 1)
+    plt.plot(tempos, x_expl)
+    plt.title("Solucao Explicita")
+
+    plt.subplot(1, 3, 2)
+    plt.plot(tempos, x_num)
+    plt.title("Solucao Numerica")
+
+    plt.subplot(1, 3, 3)
+    plt.plot(tempos, E2)
+    plt.title("Erros")
+
+    plt.show()

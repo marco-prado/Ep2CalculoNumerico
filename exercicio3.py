@@ -90,10 +90,6 @@ print("Numero de raposas: " + str(np.floor(retratos_fase[alfa_selecionado][2][-1
 
 fig = plt.figure()
 ax = plt.axes(projection="3d")
-
 ax.plot3D(retratos_fase[alfa_selecionado][0], retratos_fase[alfa_selecionado][1], retratos_fase[alfa_selecionado][2], 'gray')
 plt.title("Retrato com Alfa = " + str(alfas[alfa_selecionado]))
-
-
-
 plt.show()
