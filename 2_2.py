@@ -18,15 +18,16 @@ def eulerImplicito(x0, y0, f, g, n, T):
 
     l = 0
     t = T[0]
-
     while t < (T[1]-h):
         xl1_aprox = x[l] + f(x[l], y[l])*h  # Calcula a aproximacao inicial para X_l+1
         yl1_aprox = y[l] + g(x[l], y[l])*h  # Calcula a aproximacao inicial para Y_l+1
+
         Jacobiano = [[1 - h*(2/3 - (4/3)*y[l]), -h*(-(4/3)*x[l])], [-h*y[l], 1 - h*(x[l] - 1)]]
         invJ = np.linalg.inv(Jacobiano)
         for i in range(0, 7):  # 7 passos do metodo de newton
-            xl1_aprox = xl1_aprox - invJ[0][0]*(xl1_aprox-h*f(xl1_aprox, yl1_aprox) - x[l]) - invJ[0][1]*(yl1_aprox-h*g(xl1_aprox, yl1_aprox) - y[l])
+            xl1_new = xl1_aprox - invJ[0][0]*(xl1_aprox-h*f(xl1_aprox, yl1_aprox) - x[l]) - invJ[0][1]*(yl1_aprox-h*g(xl1_aprox, yl1_aprox) - y[l])
             yl1_aprox = yl1_aprox - invJ[1][0]*(xl1_aprox-h*f(xl1_aprox, yl1_aprox) - x[l]) - invJ[1][1]*(yl1_aprox-h*g(xl1_aprox, yl1_aprox) - y[l])
+            xl1_aprox = xl1_new
         x.append(x[l] + f(xl1_aprox, yl1_aprox)*h)  # Implementa o metodo de Euler implicito: X_l+1 = X_l + f(t_l+1, x_l+1, y_l+1)*h
         y.append(y[l] + g(xl1_aprox, yl1_aprox)*h)  # Implementa o metodo de Euler implicito: Y_l+1 = Y_l + f(t_l+1, x_l+1, y_l+1)*h
         l += 1
