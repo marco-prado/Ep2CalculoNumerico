@@ -50,7 +50,7 @@ def eulerImplicito(x0, y0, f, g, n, T):
 
     l = 0
     t = T[0]
-    while t < (T[1]-h):
+    for i in range(n):
         xl1_aprox = x[l] + f(x[l], y[l])*h  # Calcula a aproximacao inicial para X_l+1
         yl1_aprox = y[l] + g(x[l], y[l])*h  # Calcula a aproximacao inicial para Y_l+1
 
@@ -63,7 +63,6 @@ def eulerImplicito(x0, y0, f, g, n, T):
         x.append(x[l] + f(xl1_aprox, yl1_aprox)*h)  # Implementa o metodo de Euler implicito: X_l+1 = X_l + f(t_l+1, x_l+1, y_l+1)*h
         y.append(y[l] + g(xl1_aprox, yl1_aprox)*h)  # Implementa o metodo de Euler implicito: Y_l+1 = Y_l + f(t_l+1, x_l+1, y_l+1)*h
         l += 1
-        t += h
     return x, y
 
 
@@ -88,12 +87,8 @@ if(exercicio == 1 or exercicio == 2 or exercicio == 4):
         x, y = rk4(x0, y0, n, h, f, g)
 
     t_eixo = []
-    if(exercicio == 1 or exercicio == 4):
-        for i in range(0, n + 1):
-            t_eixo.append(T[0] + h * i)
-    else:
-        for i in range(0, n):
-            t_eixo.append(T[0] + h * i)
+    for i in range(0, n + 1):
+        t_eixo.append(T[0] + h * i)
 
     grafs, (g1, g2) = plt.subplots(1, 2, constrained_layout=True, sharey=True)
     g1.plot(x, y)
