@@ -50,7 +50,7 @@ def eulerImplicito(x0, y0, f, g, n, T):
 
     l = 0
     t = T[0]
-    for i in range(n):
+    for l in range(0, n):
         xl1_aprox = x[l] + f(x[l], y[l])*h  # Calcula a aproximacao inicial para X_l+1
         yl1_aprox = y[l] + g(x[l], y[l])*h  # Calcula a aproximacao inicial para Y_l+1
 
@@ -62,7 +62,7 @@ def eulerImplicito(x0, y0, f, g, n, T):
             xl1_aprox = xl1_new
         x.append(x[l] + f(xl1_aprox, yl1_aprox)*h)  # Implementa o metodo de Euler implicito: X_l+1 = X_l + f(t_l+1, x_l+1, y_l+1)*h
         y.append(y[l] + g(xl1_aprox, yl1_aprox)*h)  # Implementa o metodo de Euler implicito: Y_l+1 = Y_l + f(t_l+1, x_l+1, y_l+1)*h
-        l += 1
+        t += h
     return x, y
 
 
@@ -104,5 +104,31 @@ if(exercicio == 1 or exercicio == 2 or exercicio == 4):
         grafs.suptitle("Método de Euler Implícito", fontsize = 17)
     elif exercicio == 4:
         grafs.suptitle("Método de Runge-Kutta de 4a Ordem", fontsize = 17)
+
+    plt.show()
+
+elif(exercicio == 3):
+    valoresN = [250, 500, 1000, 2000, 4000]
+
+    pos = 1
+    for n in valoresN:
+        xim, yim = eulerImplicito(x0, y0, f, g, n, T)
+
+        h = (T[1] - T[0]) / n
+        xex, yex = eulerExplicito(x0, y0, n, h, f, g)
+
+        Ex = np.subtract(xim, xex)
+        Ey = np.subtract(yim, yex)
+
+        t_eixo = []
+        for i in range(0, n + 1):
+            t_eixo.append(T[0] + ((T[1] - T[0]) / n) * i)
+
+        plt.subplot(1, 5, pos)
+        plt.plot(t_eixo, Ex, color='blue')
+        plt.plot(t_eixo, Ey, color='red')
+        plt.title("Erro com N = " + str(n))
+
+        pos += 1
 
     plt.show()
